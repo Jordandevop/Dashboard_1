@@ -1,6 +1,13 @@
 import { useState } from 'react'
 import { Row, Col, Card, Form, Button } from 'react-bootstrap'
 
+ const priorityOptions = [
+        { value: 'low', label: 'Basse' },
+        { value: 'medium', label: 'Moyenne' },
+        { value: 'high', label: 'Haute' },
+    ];
+
+
 export default function TaskDashboard() {
 
     // const [title, setTitle] = useState('')
@@ -23,11 +30,8 @@ export default function TaskDashboard() {
         });
     }
 
-    const priorityOptions = [
-        { value: 'low', label: 'Basse' },
-        { value: 'medium', label: 'Moyenne' },
-        { value: 'high', label: 'Haute' },
-    ];
+
+    const priorityLabel = priorityOptions.find(o => o.value === formData.priority)?.label ?? 'Non définie'
 
     const handleSubmit = (e) => {
       e.preventDefault()
@@ -35,7 +39,7 @@ export default function TaskDashboard() {
       alert(`
         Titre : ${formData.title}
         Description: ${formData.description}
-        Priorité: ${formData.priority}
+        Priorité: ${priorityLabel}
         Statut: ${formData.done ? 'Terminée': 'En cours'}
         
         `)
@@ -44,7 +48,7 @@ export default function TaskDashboard() {
         title:'',
         description:'',
         priority:'',
-        done:'',
+        done: false,
       })
     }
 
@@ -160,8 +164,8 @@ export default function TaskDashboard() {
                             <h2 className='h5'>Données du form</h2>
                             Titre : {formData.title}<br />
                             Description : {formData.description}<br />
-                            Priorité : {formData.priority}<br />
-                            Etat : {formData.done ? 'Terminée' : ''}<br />
+                            Priorité : {priorityLabel}<br />
+                            Statut : {formData.done ? 'Terminée' : ''}<br />
                         </Card.Body>
                     </Card>
                 </Col>
