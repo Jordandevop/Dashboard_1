@@ -2,16 +2,34 @@ import { useState } from "react";
 import { Row, Col, Card, Form } from "react-bootstrap";
 
 export default function TaskDashboard() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [priority, setPriority] = useState("");
-  const PRIORITY_OPTIONS = [
+  // const [title, setTitle] = useState("");
+  // const [description, setDescription] = useState("");
+  // const [priority, setPriority] = useState("");
+    // const [done, setDone] = useState(false);
+
+      const PRIORITY_OPTIONS = [
     { value: "home", label: "Choissiez votre priorité"},
     { value: "low", label: "Basse" },
-    { value: "normale", label: "Normale" },
+    { value: "medium", label: "Normale" },
     { value: "high", label: "Haute" },
   ];
-  const [done, setDone] = useState(false);
+
+  const [formData, setFormData]= useState({
+    title:'',
+    description: '',
+    priority:'',
+    done:false,
+  })
+
+  const handleChange =(e)=>{
+    const { name, value , type , checked}= e.target
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value
+    });
+  }
+
+
   return (
     <>
       <div className="mb-4">
@@ -57,8 +75,8 @@ export default function TaskDashboard() {
                     type="text"
                     name="title"
                     placeholder="Saisir un titre"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    value={formData.title}
+                    onChange={handleChange}
                   />
                 </Form.Group>
               </Form>
@@ -75,8 +93,8 @@ export default function TaskDashboard() {
                   name="description"
                   placeholder="Saisir une description"
                   rows={4}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  value={formData.description}
+                  onChange={handleChange}
                 />
               </Form.Group>
             </Card.Body>
@@ -90,8 +108,8 @@ export default function TaskDashboard() {
 
                 <Form.Select
                   name="priority"
-                  value={priority}
-                  onChange={(e) => setPriority(e.target.value)}
+                  value={formData.priority}
+                  onChange={handleChange}
                 >
                   {PRIORITY_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -109,14 +127,26 @@ export default function TaskDashboard() {
               <Card.Title> Tâches terminées</Card.Title>
               <Form.Check
                 type="checkbox"
+                name="done"
                 label="Terminée"
-                checked={done}
-                onChange={(e) => setDone(e.target.checked)}
+                checked={formData.done}
+                onChange={handleChange}
               />
             </Card.Body>
           </Card>
         </Col>
-        <Col lg={8}>{/* Affichage des tâches */}</Col>
+        <Col lg={8}>{/* Affichage des tâches */}
+        <Card className="shadow-sm border-0">
+          <Card.Body>
+            <Card.Title>Aperçu</Card.Title>
+            <p><strong>Titre :</strong>{formData.title}</p>
+            <p><strong>Description : </strong>{formData.description}</p>
+            <p><strong>Priorité : </strong>{formData.priority}</p>
+            <p><strong>Statut : </strong>{ formData.done ? 'Terminée' : 'En cours'}</p>
+          </Card.Body>
+
+        </Card>
+        </Col>
       </Row>
     </>
   );
