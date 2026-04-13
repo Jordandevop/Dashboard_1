@@ -5,6 +5,12 @@ export default function TaskDashboard() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("");
+  const PRIORITY_OPTIONS = [
+    { value: "home", label: "Choissiez votre priorité"},
+    { value: "low", label: "Basse" },
+    { value: "normale", label: "Normale" },
+    { value: "high", label: "Haute" },
+  ];
   const [done, setDone] = useState(false);
   return (
     <>
@@ -68,7 +74,7 @@ export default function TaskDashboard() {
                   as="textarea"
                   name="description"
                   placeholder="Saisir une description"
-                  rows={3}
+                  rows={4}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
@@ -81,15 +87,17 @@ export default function TaskDashboard() {
               <Card.Title>Priorité de la tâche</Card.Title>
               <Form.Group className="mb-3" controlId="description">
                 <Form.Label>Priorité</Form.Label>
+
                 <Form.Select
                   name="priority"
                   value={priority}
                   onChange={(e) => setPriority(e.target.value)}
                 >
-                  <option value="">-- Choisir une priorité --</option>
-                  <option value="basse">Basse</option>
-                  <option value="normale">Normale</option>
-                  <option value="haute">Haute</option>
+                  {PRIORITY_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
                 </Form.Select>
               </Form.Group>
             </Card.Body>
